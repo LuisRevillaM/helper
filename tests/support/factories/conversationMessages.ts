@@ -6,12 +6,16 @@ import { conversationMessages } from "@/db/schema";
 
 export const conversationMessagesFactory = {
   create: async (conversationId: number, overrides: Partial<typeof conversationMessages.$inferInsert> = {}) => {
+    const body = faker.lorem.paragraph();
+    const cleanedUpText = faker.lorem.sentence();
     const message = await db
       .insert(conversationMessages)
       .values({
         conversationId,
-        body: faker.lorem.paragraph(),
-        cleanedUpText: faker.lorem.sentence(),
+        body,
+        bodyPlaintext: body,
+        cleanedUpText,
+        cleanedUpTextPlaintext: cleanedUpText,
         role: "user",
         status: "sent",
         emailFrom: faker.internet.email(),
@@ -34,13 +38,16 @@ export const conversationMessagesFactory = {
     overrides: Partial<typeof conversationMessages.$inferInsert> = {},
   ) => {
     const body = faker.lorem.paragraph();
+    const cleaned = htmlToText(body);
     const message = await db
       .insert(conversationMessages)
       .values({
         conversationId,
         responseToId,
         body,
-        cleanedUpText: htmlToText(body),
+        bodyPlaintext: body,
+        cleanedUpText: cleaned,
+        cleanedUpTextPlaintext: cleaned,
         role: "ai_assistant",
         status: "draft",
         emailCc: [],

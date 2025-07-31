@@ -220,7 +220,9 @@ describe("getNonSupportParticipants", () => {
       .values({
         email: "gmail@example.com",
         accessToken: "123",
+        accessTokenPlaintext: "123",
         refreshToken: "123",
+        refreshTokenPlaintext: "123",
       })
       .returning({ id: gmailSupportEmails.id })
       .then(takeUniqueOrThrow);

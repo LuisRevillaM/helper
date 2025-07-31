@@ -13,6 +13,7 @@ describe("encryptedField", () => {
     const { gmailSupportEmail } = await gmailSupportEmailFactory.create({
       email: "test@example.com",
       accessToken: testAccessToken,
+      accessTokenPlaintext: testAccessToken,
     });
 
     expect(
@@ -22,6 +23,7 @@ describe("encryptedField", () => {
     ).toMatchObject({
       email: "test@example.com",
       accessToken: testAccessToken,
+      accessTokenPlaintext: testAccessToken,
     });
 
     const rawDbValues = await db.execute(
@@ -39,6 +41,7 @@ describe("encryptedField", () => {
     });
 
     expect(message.body).toEqual(messageBody);
+    expect(message.bodyPlaintext).toEqual(messageBody);
   });
 });
 
@@ -48,6 +51,7 @@ describe("nativeEncryptedField", () => {
     const { tool } = await toolsFactory.create({
       name: "Test Tool",
       authenticationToken: testAuthToken,
+      authenticationTokenPlaintext: testAuthToken,
     });
 
     const fetchedTool = await db.query.tools.findFirst({
@@ -57,6 +61,7 @@ describe("nativeEncryptedField", () => {
     expect(fetchedTool).toMatchObject({
       name: "Test Tool",
       authenticationToken: testAuthToken,
+      authenticationTokenPlaintext: testAuthToken,
     });
 
     const rawDbValues = await db.execute(

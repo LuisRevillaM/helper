@@ -7,6 +7,7 @@ type Tool = typeof tools.$inferInsert;
 
 export const toolsFactory = {
   create: async (overrides: Partial<Tool>) => {
+    const token = faker.string.alphanumeric(32);
     const defaultTool: Tool = {
       name: faker.company.name(),
       description: faker.lorem.sentence(),
@@ -16,7 +17,8 @@ export const toolsFactory = {
       headers: null,
       parameters: null,
       authenticationMethod: "bearer_token",
-      authenticationToken: faker.string.alphanumeric(32),
+      authenticationToken: token,
+      authenticationTokenPlaintext: token,
       enabled: true,
       availableInChat: false,
       availableInAnonymousChat: false,
@@ -24,6 +26,9 @@ export const toolsFactory = {
     };
 
     const toolData = { ...defaultTool, ...overrides };
+    if (toolData.authenticationToken && !toolData.authenticationTokenPlaintext) {
+      toolData.authenticationTokenPlaintext = toolData.authenticationToken;
+    }
 
     const tool = await db.insert(tools).values(toolData).returning().then(takeUniqueOrThrow);
 
