@@ -94,6 +94,7 @@ export const processGmailThreadWithClient = async (
       emailFrom: parsedEmailFrom.address,
       emailFromName: parsedEmailFrom.name,
       subject,
+      subjectPlaintext: subject,
       status: "open",
       conversationProvider: "gmail",
       ...conversationOverrides,

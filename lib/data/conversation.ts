@@ -41,6 +41,7 @@ export const createConversation = async (
   try {
     const conversationValues = {
       ...conversation,
+      subjectPlaintext: conversation.subject ?? null,
       conversationProvider: "chat" as const,
     };
 
@@ -389,6 +390,9 @@ export const generateConversationSubject = async (
           })
         ).text;
 
-  await db.update(conversations).set({ subject }).where(eq(conversations.id, conversationId));
+  await db
+    .update(conversations)
+    .set({ subject, subjectPlaintext: subject })
+    .where(eq(conversations.id, conversationId));
   return subject;
 };

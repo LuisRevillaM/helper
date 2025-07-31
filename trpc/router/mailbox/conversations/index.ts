@@ -120,14 +120,15 @@ export const conversationsRouter = {
       }),
     )
     .mutation(async ({ input: { conversation }, ctx }) => {
-      const { id: conversationId } = await db
-        .insert(conversations)
-        .values({
-          slug: conversation.conversation_slug,
-          subject: conversation.subject,
-          emailFrom: conversation.to_email_address,
-          conversationProvider: "gmail",
-        })
+        const { id: conversationId } = await db
+          .insert(conversations)
+          .values({
+            slug: conversation.conversation_slug,
+            subject: conversation.subject,
+            subjectPlaintext: conversation.subject,
+            emailFrom: conversation.to_email_address,
+            conversationProvider: "gmail",
+          })
         .returning({ id: conversations.id })
         .then(takeUniqueOrThrow);
 

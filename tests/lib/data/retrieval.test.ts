@@ -31,6 +31,7 @@ describe("getPastConversationsPrompt", () => {
       await db.insert(conversationMessages).values({
         conversationId: conv.id,
         body: `Test message for conversation ${conv.id}`,
+        bodyPlaintext: `Test message for conversation ${conv.id}`,
         role: "user",
         isPerfect: false,
         isFlaggedAsBad: false,
